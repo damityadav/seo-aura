@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SEO Aura - Audit & Schema</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="logo-area">
+        <div class="logo-icon-wrapper">
+          <svg class="logo-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="12" r="10" stroke="url(#logo-grad)" stroke-width="2.5" />
+            <path d="M12 7V12L15 15" stroke="#a855f7" stroke-width="2" stroke-linecap="round" />
+            <defs>
+              <linearGradient id="logo-grad" x1="2" y1="2" x2="22" y2="22" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#6366f1" />
+                <stop offset="1" stop-color="#a855f7" />
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <div class="logo-text">
+          <h1>SEO <span class="gradient-text">Aura</span></h1>
+          <span class="version-label">v1.1.0</span>
+        </div>
+      </div>
+      <div class="scan-status">
+        <span class="status-indicator active"></span>
+        <span class="status-text">Active Tab</span>
+      </div>
+    </header>
+
+    <!-- Subheader Domain Display -->
+    <div class="domain-banner">
+      <span class="domain-icon">🌐</span>
+      <span id="domain-name" class="domain-text">Detecting website...</span>
+    </div>
+
+    <!-- Tab Navigation - Support 5 Tabs -->
+    <nav class="tab-navigation">
+      <button id="tab-seo" class="tab-btn active">
+        <span class="tab-icon">📊</span>
+        <span class="tab-label">SEO</span>
+      </button>
+      <button id="tab-trackers" class="tab-btn">
+        <span class="tab-icon">🔌</span>
+        <span class="tab-label">Trackers</span>
+        <span id="tracker-badge" class="count-badge hidden">0</span>
+      </button>
+      <button id="tab-text" class="tab-btn">
+        <span class="tab-icon">📝</span>
+        <span class="tab-label">Copy Text</span>
+      </button>
+      <button id="tab-images" class="tab-btn">
+        <span class="tab-icon">🖼️</span>
+        <span class="tab-label">Images</span>
+        <span id="images-badge" class="count-badge hidden">0</span>
+      </button>
+      <button id="tab-schema" class="tab-btn">
+        <span class="tab-icon">🧩</span>
+        <span class="tab-label">Schema</span>
+        <span id="schema-badge" class="count-badge hidden">0</span>
+      </button>
+      <button id="tab-pagespeed" class="tab-btn">
+        <span class="tab-icon">⚡</span>
+        <span class="tab-label">PageSpeed</span>
+      </button>
+
+    </nav>
+
+    <!-- Main Content Panels -->
+    <main class="app-main">
+      <!-- Loading Panel -->
+      <div id="panel-loading" class="panel-content active">
+        <div class="loading-wrapper">
+          <div class="spinner-container">
+            <div class="spinner-ring"></div>
+            <div class="spinner-core"></div>
+          </div>
+          <h3>Auditing Webpage</h3>
+          <p>Extracting page assets and running audit scans...</p>
+        </div>
+      </div>
+
+      <!-- SEO Panel -->
+      <div id="panel-seo" class="panel-content">
+        <!-- Score Section -->
+        <section class="score-hero">
+          <div class="score-radial-wrapper">
+            <svg class="score-svg" viewBox="0 0 100 100">
+              <circle class="score-track" cx="50" cy="50" r="42" stroke-width="8" />
+              <circle id="score-fill" class="score-fill" cx="50" cy="50" r="42" stroke-width="8" stroke-dasharray="264" stroke-dashoffset="264" />
+            </svg>
+            <div class="score-center">
+              <span id="seo-score-num" class="score-number">--</span>
+              <span class="score-total">/100</span>
+            </div>
+          </div>
+          <div class="score-label-wrapper">
+            <h2 id="score-title" class="score-title">Analyzing...</h2>
+            <p id="score-subtitle" class="score-subtitle">Reading SEO signals</p>
+          </div>
+        </section>
+
+        <!-- SEO Accordion Section -->
+        <section class="audit-accordion">
+          <!-- Critical Errors -->
+          <div class="accordion-group border-error">
+            <button id="acc-btn-errors" class="accordion-header">
+              <div class="header-title">
+                <span class="status-dot error-dot"></span>
+                <span>Critical Errors</span>
+                <span id="badge-errors" class="group-count badge-error">0</span>
+              </div>
+              <span class="chevron">▼</span>
+            </button>
+            <div id="acc-content-errors" class="accordion-content">
+              <div id="list-errors" class="audit-list">
+                <!-- Dynamic errors list -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Warnings -->
+          <div class="accordion-group border-warning">
+            <button id="acc-btn-warnings" class="accordion-header">
+              <div class="header-title">
+                <span class="status-dot warning-dot"></span>
+                <span>Warnings</span>
+                <span id="badge-warnings" class="group-count badge-warning">0</span>
+              </div>
+              <span class="chevron">▼</span>
+            </button>
+            <div id="acc-content-warnings" class="accordion-content">
+              <div id="list-warnings" class="audit-list">
+                <!-- Dynamic warnings list -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Passed Audits -->
+          <div class="accordion-group border-passed">
+            <button id="acc-btn-passed" class="accordion-header">
+              <div class="header-title">
+                <span class="status-dot passed-dot"></span>
+                <span>Passed Checks</span>
+                <span id="badge-passed" class="group-count badge-passed">0</span>
+              </div>
+              <span class="chevron">▼</span>
+            </button>
+            <div id="acc-content-passed" class="accordion-content">
+              <div id="list-passed" class="audit-list">
+                <!-- Dynamic passes list -->
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- Trackers Panel -->
+      <div id="panel-trackers" class="panel-content">
+        <!-- Tracker Hero Stats -->
+        <div id="trackers-hero" class="trackers-hero">
+          <div class="trackers-count-display">
+            <span id="trackers-total-num" class="large-count">0</span>
+            <span class="count-label">Detected Code & Scripts</span>
+          </div>
+          <p id="trackers-summary-text" class="trackers-summary-text">No active marketing pixels found.</p>
+        </div>
+
+        <!-- Trackers List -->
+        <div id="trackers-list" class="trackers-grid">
+          <!-- Dynamic tracker cards -->
+        </div>
+
+        <!-- Trackers Empty State -->
+        <div id="trackers-empty" class="trackers-empty-state hidden">
+          <div class="empty-icon-ring">✨</div>
+          <h3>Absolutely Clean!</h3>
+          <p>No tracking scripts, analytics, or social pixels were detected on this page. Pure static privacy!</p>
+        </div>
+      </div>
+
+      <!-- Copy Text Panel -->
+      <div id="panel-text" class="panel-content">
+        <div class="text-copy-hero">
+          <div class="action-header">
+            <div class="action-title-group">
+              <h3>Structured Webpage Content</h3>
+              <p id="text-stats-label">0 words extracted (Anti-Copy Bypassed)</p>
+            </div>
+            <button id="btn-copy-content" class="action-btn-glow">
+              <span class="btn-icon">📋</span>
+              <span id="btn-copy-text">Copy Content</span>
+            </button>
+          </div>
+          <div class="text-preview-container">
+            <pre id="text-preview-box" class="text-preview-box">Extracting page content...</pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- Images Downloader Panel -->
+      <div id="panel-images" class="panel-content">
+        <!-- Images Stats Section -->
+        <div class="images-action-hero">
+          <div class="images-stats-group">
+            <span id="images-total-display" class="large-count">0</span>
+            <span class="count-label">Images Found</span>
+          </div>
+          <button id="btn-download-all" class="action-btn-glow">
+            <span class="btn-icon">📥</span>
+            <span>Download All</span>
+          </button>
+        </div>
+
+        <!-- Images Scroll Grid -->
+        <div id="images-list" class="images-grid">
+          <!-- Dynamic image cards will be rendered here -->
+        </div>
+
+        <!-- Images Empty State -->
+        <div id="images-empty" class="trackers-empty-state hidden">
+          <div class="empty-icon-ring">📷</div>
+          <h3>No Images Discovered</h3>
+          <p>This webpage doesn't contain any visible image elements to download.</p>
+        </div>
+      </div>
+
+      <!-- Schema Checker Panel -->
+      <div id="panel-schema" class="panel-content">
+        <!-- Schema Hero Stats -->
+        <div class="trackers-hero">
+          <div class="trackers-count-display">
+            <span id="schemas-total-num" class="large-count">0</span>
+            <span class="count-label">Structured Schemas Found</span>
+          </div>
+          <p id="schemas-summary-text" class="trackers-summary-text">No structured data found on this page.</p>
+        </div>
+
+        <!-- Schemas Accordion List -->
+        <div id="schema-list" class="trackers-grid">
+          <!-- Dynamic schema cards will be rendered here -->
+        </div>
+
+        <!-- Schemas Empty State -->
+        <div id="schema-empty" class="trackers-empty-state hidden">
+          <div class="empty-icon-ring">🧬</div>
+          <h3>No Structured Data</h3>
+          <p>This webpage doesn't contain any JSON-LD scripts or Microdata schemas. Add schema markup to build rich search ranks.</p>
+        </div>
+      </div>
+
+      <!-- PageSpeed Panel -->
+      <div id="panel-pagespeed" class="panel-content">
+        <div class="trackers-hero" style="margin-bottom: 16px;">
+          <div class="form-title-group" style="text-align: center;">
+            <h3>Google PageSpeed Insights</h3>
+            <p style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">Audit mobile and desktop loading speed, core web vitals, and diagnostics.</p>
+          </div>
+          
+          <div class="pagespeed-form" style="width: 100%; margin-top: 16px; display: flex; flex-direction: column; gap: 12px; text-align: left;">
+
+            <div class="input-field-group">
+              <label for="speed-url" class="input-label" style="display: block; font-size: 11px; font-weight: 700; color: var(--text-secondary); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">Target URL</label>
+              <input type="text" id="speed-url" class="rank-input" placeholder="https://example.com" style="width: 100%;">
+            </div>
+            
+            <div class="input-field-group">
+              <label class="input-label" style="display: block; font-size: 11px; font-weight: 700; color: var(--text-secondary); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">Device Strategy</label>
+              <div class="strategy-selector" style="display: flex; gap: 8px;">
+                <button id="btn-strategy-mobile" class="strategy-btn active">
+                  <span>📱</span> Mobile
+                </button>
+                <button id="btn-strategy-desktop" class="strategy-btn">
+                  <span>💻</span> Desktop
+                </button>
+              </div>
+            </div>
+            
+            <button id="btn-analyze-speed" class="action-btn-glow" style="width: 100%; margin-top: 6px; height: 38px; justify-content: center;">
+              <span class="btn-icon">⚡</span>
+              <span>Analyze Speed</span>
+            </button>
+            
+            <!-- Collapsible API Settings -->
+            <div class="api-key-settings" style="margin-top: 4px;">
+              <button type="button" id="btn-toggle-api-key" class="strategy-btn" style="width: 100%; padding: 6px 10px; font-size: 11px; border-radius: 10px; height: auto;">
+                🔑 Configure PageSpeed API Key
+              </button>
+              <div id="api-key-container" class="hidden" style="margin-top: 10px; display: flex; flex-direction: column; gap: 8px; background: rgba(0, 0, 0, 0.25); border: 1px dashed var(--border-light); padding: 12px; border-radius: 10px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px;">
+                  <label for="pagespeed-api-key" class="input-label" style="font-size: 9.5px; letter-spacing: 0.5px; margin: 0;">PageSpeed API Key</label>
+                  <a href="https://developers.google.com/speed/docs/insights/v5/get-started" target="_blank" style="font-size: 9.5px; color: #a5b4fc; text-decoration: underline; font-weight: 500;">Get free API Key ↗</a>
+                </div>
+                <div style="display: flex; gap: 8px;">
+                  <input type="password" id="pagespeed-api-key" class="rank-input" placeholder="Paste Google API Key" style="flex: 1; height: 32px; padding: 6px 10px; font-size: 11.5px;">
+                  <button type="button" id="btn-save-api-key" class="action-btn-glow" style="height: 32px; font-size: 10px; padding: 0 12px; border-radius: 8px; box-shadow: none; flex-shrink: 0;">
+                    Save
+                  </button>
+                </div>
+                <span id="api-key-status" style="font-size: 9.5px; font-weight: 600; display: none; margin-top: 2px;"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- API Key Error Help Card -->
+        <div id="pagespeed-error-card" class="hidden" style="margin-top: 15px; background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.2); border-radius: 12px; padding: 14px; text-align: left; line-height: 1.5; font-size: 11.5px;">
+          <strong style="color: #fca5a5; font-size: 12.5px; display: block; margin-bottom: 6px;">⚠️ API Key Referrer Restriction</strong>
+          Google PageSpeed API blocked the request because your API key is restricted to specific websites (HTTP referrers).<br><br>
+          <strong>How to fix this:</strong><br>
+          1. Go to <a href="https://console.cloud.google.com/apis/credentials" target="_blank" style="color: #a5b4fc; text-decoration: underline;">Google Cloud Console</a>.<br>
+          2. Edit your PageSpeed API key.<br>
+          3. Under <strong>Application restrictions</strong>, either select <strong>None</strong>, or keep <strong>Websites</strong> and add the following allowed referrer:<br>
+          <code id="pagespeed-allowed-referer" style="display: block; background: rgba(0, 0, 0, 0.4); padding: 4px 8px; border-radius: 6px; margin-top: 6px; font-family: monospace; font-size: 10px; word-break: break-all; color: #e2e8f0; border: 1px solid rgba(255, 255, 255, 0.1);">chrome-extension://[id]/*</code>
+        </div>
+
+        <!-- Speed Checker Loader -->
+        <div id="speed-loader" class="rank-loader-container hidden" style="display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 24px; text-align: center; border: 1px solid var(--border-light); border-radius: 16px; margin-top: 15px;">
+          <div class="rank-loader-bar" style="width: 100%; height: 4px; background: rgba(255, 255, 255, 0.05); border-radius: 2px; overflow: hidden; position: relative;">
+            <div class="rank-loader-progress" style="width: 45%; height: 100%; background: var(--primary-gradient); border-radius: 2px; position: absolute; left: -45%; animation: loading-slide 1.5s infinite linear;"></div>
+          </div>
+          <p id="speed-loader-text" class="rank-loader-text" style="font-size: 12px; color: var(--text-secondary);">Connecting to Google PageSpeed Insights API...</p>
+        </div>
+        
+        <!-- Audit Results Panel -->
+        <div id="speed-result" class="rank-result-card hidden" style="margin-top: 15px; display: flex; flex-direction: column; gap: 16px;">
+          
+          <!-- Performance Score Radial Ring -->
+          <div class="score-hero" style="background: rgba(255, 255, 255, 0.01); border: 1px solid var(--border-light); border-radius: 16px; padding: 16px 20px; display: flex; align-items: center; gap: 20px; box-shadow: var(--shadow-card);">
+            <div class="score-radial-wrapper" style="width: 72px; height: 72px; flex-shrink: 0; position: relative; display: flex; align-items: center; justify-content: center;">
+              <svg class="score-svg" viewBox="0 0 100 100" style="width: 100%; height: 100%;">
+                <circle class="score-track" cx="50" cy="50" r="42" stroke="rgba(255, 255, 255, 0.03)" stroke-width="8" fill="none" />
+                <circle id="speed-radial-fill" cx="50" cy="50" r="42" stroke="#6366f1" stroke-width="8" stroke-dasharray="264" stroke-dashoffset="264" fill="none" style="transition: stroke-dashoffset 0.8s ease; transform: rotate(-90deg); transform-origin: 50% 50%;" />
+              </svg>
+              <div class="score-center" style="position: absolute; display: flex; flex-direction: column; align-items: center;">
+                <span id="speed-score-num" class="score-number" style="font-family: var(--font-display); font-size: 20px; font-weight: 800; color: var(--text-primary);">--</span>
+              </div>
+            </div>
+            <div class="score-label-wrapper">
+              <h3 id="speed-score-title" class="score-title" style="font-family: var(--font-display); font-size: 15px; font-weight: 700; color: var(--text-primary);">Analyzing...</h3>
+              <p id="speed-score-subtitle" class="score-subtitle" style="font-size: 12px; color: var(--text-secondary);">Google PageSpeed Score</p>
+            </div>
+          </div>
+          
+          <!-- Core Web Vitals Metrics Grid -->
+          <div class="metrics-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            
+            <div class="metric-card" style="background: rgba(15, 23, 42, 0.35); border: 1px solid var(--border-light); border-radius: 12px; padding: 10px 12px; display: flex; flex-direction: column; gap: 4px;">
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <span id="dot-fcp" class="status-dot passed-dot" style="width: 8px; height: 8px; border-radius: 50%; display: inline-block;"></span>
+                <span style="font-size: 11px; font-weight: 600; color: var(--text-secondary);">First Contentful Paint</span>
+              </div>
+              <span id="val-fcp" style="font-family: var(--font-display); font-size: 16px; font-weight: 700; color: var(--text-primary);">--</span>
+            </div>
+            
+            <div class="metric-card" style="background: rgba(15, 23, 42, 0.35); border: 1px solid var(--border-light); border-radius: 12px; padding: 10px 12px; display: flex; flex-direction: column; gap: 4px;">
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <span id="dot-lcp" class="status-dot passed-dot" style="width: 8px; height: 8px; border-radius: 50%; display: inline-block;"></span>
+                <span style="font-size: 11px; font-weight: 600; color: var(--text-secondary);">Largest Contentful Paint</span>
+              </div>
+              <span id="val-lcp" style="font-family: var(--font-display); font-size: 16px; font-weight: 700; color: var(--text-primary);">--</span>
+            </div>
+            
+            <div class="metric-card" style="background: rgba(15, 23, 42, 0.35); border: 1px solid var(--border-light); border-radius: 12px; padding: 10px 12px; display: flex; flex-direction: column; gap: 4px;">
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <span id="dot-cls" class="status-dot passed-dot" style="width: 8px; height: 8px; border-radius: 50%; display: inline-block;"></span>
+                <span style="font-size: 11px; font-weight: 600; color: var(--text-secondary);">Cumulative Layout Shift</span>
+              </div>
+              <span id="val-cls" style="font-family: var(--font-display); font-size: 16px; font-weight: 700; color: var(--text-primary);">--</span>
+            </div>
+            
+            <div class="metric-card" style="background: rgba(15, 23, 42, 0.35); border: 1px solid var(--border-light); border-radius: 12px; padding: 10px 12px; display: flex; flex-direction: column; gap: 4px;">
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <span id="dot-tbt" class="status-dot passed-dot" style="width: 8px; height: 8px; border-radius: 50%; display: inline-block;"></span>
+                <span style="font-size: 11px; font-weight: 600; color: var(--text-secondary);">Total Blocking Time</span>
+              </div>
+              <span id="val-tbt" style="font-family: var(--font-display); font-size: 16px; font-weight: 700; color: var(--text-primary);">--</span>
+            </div>
+
+            <div class="metric-card" style="background: rgba(15, 23, 42, 0.35); border: 1px solid var(--border-light); border-radius: 12px; padding: 10px 12px; display: flex; flex-direction: column; gap: 4px;">
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <span id="dot-si" class="status-dot passed-dot" style="width: 8px; height: 8px; border-radius: 50%; display: inline-block;"></span>
+                <span style="font-size: 11px; font-weight: 600; color: var(--text-secondary);">Speed Index</span>
+              </div>
+              <span id="val-si" style="font-family: var(--font-display); font-size: 16px; font-weight: 700; color: var(--text-primary);">--</span>
+            </div>
+
+            <div class="metric-card" style="background: rgba(15, 23, 42, 0.35); border: 1px solid var(--border-light); border-radius: 12px; padding: 10px 12px; display: flex; flex-direction: column; gap: 4px;">
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <span id="dot-tti" class="status-dot passed-dot" style="width: 8px; height: 8px; border-radius: 50%; display: inline-block;"></span>
+                <span style="font-size: 11px; font-weight: 600; color: var(--text-secondary);">Time to Interactive</span>
+              </div>
+              <span id="val-tti" style="font-family: var(--font-display); font-size: 16px; font-weight: 700; color: var(--text-primary);">--</span>
+            </div>
+          </div>
+          
+          <!-- Opportunities Section -->
+          <div class="history-section" style="margin-top: 15px;">
+            <div class="history-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border-bottom: 1px solid var(--border-light); padding-bottom: 8px;">
+              <h4 class="count-label" style="font-size: 11px;">Opportunities & Suggestions</h4>
+              <span id="speed-badge-savings" class="group-count badge-warning" style="font-size: 10px; padding: 2px 6px;">0 Tips</span>
+            </div>
+            <div id="speed-opportunities-list" style="display: flex; flex-direction: column; gap: 8px; max-height: 200px; overflow-y: auto;">
+              <!-- Dynamic speed opportunities go here -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- Error Panel -->
+      <div id="panel-error" class="panel-content">
+        <div class="error-wrapper">
+          <div class="error-icon">⚠️</div>
+          <h3 id="error-title-text">Execution Error</h3>
+          <p id="error-desc-text">Unable to run script analyzer on this page. Restricted URL.</p>
+          <button id="btn-retry" class="action-btn">Try Re-scanning</button>
+        </div>
+      </div>
+    </main>
+
+    <!-- Floating Notification Toast -->
+    <div id="toast-notification" class="toast-notification hidden">
+      <span class="toast-icon">✓</span>
+      <span id="toast-text" class="toast-text">Copied to Clipboard!</span>
+    </div>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <div class="footer-left">
+        <span>Click 🌐 to re-scan page</span>
+      </div>
+      <div class="footer-right">
+        <button id="btn-refresh" class="footer-action-btn" title="Re-scan Website">
+          <svg class="refresh-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4 4V9H4.582M19.938 11C19.645 7.054 16.326 4 12.308 4C9.538 4 7.151 5.429 5.823 7.575L4.582 9M20 20V15H19.418M19.418 15C18.177 17.067 15.823 18.5 13.077 18.5C9.07 18.5 5.753 15.462 5.438 11.5M19.418 15H14" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+    </footer>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
