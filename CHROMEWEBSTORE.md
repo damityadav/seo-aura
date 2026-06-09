@@ -130,6 +130,7 @@ https://github.com/damityadav/seo-aura
 
 | Version | Date | Changes | Status |
 |---------|------|---------|--------|
+| 1.2.1 | 2026-06-09 | Clarified PageSpeed API key guidance: messaging now states a free Google API key is required for reliable scans, with a helpful prompt when the keyless quota is hit. | Draft |
 | 1.2.0 | 2026-06-09 | Removed Rank Tracker. Refactored PageSpeed Insights integration: fixed layout issues, added optimization opportunities, and integrated customizable API Key configuration with local storage. | Draft |
 | 1.1.0 | 2026-06-01 | Added Content Copy tab (with anti-copy bypass safeguards) and Images Downloader tab with local, zero-dependency ZIP archive compiler. | Draft |
 | 1.0.0 | 2026-06-01 | Initial release with full SEO scoring, accordions, and script pixel detector. | Draft |

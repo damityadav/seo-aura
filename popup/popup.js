@@ -1199,11 +1199,16 @@ document.addEventListener('DOMContentLoaded', () => {
       console.error("PageSpeed Analysis failed:", err);
       const errMsg = err.message || String(err);
       
+      const isQuotaError = errMsg.includes("Quota exceeded") || errMsg.includes("rateLimitExceeded") || errMsg.includes("userRateLimitExceeded") || errMsg.includes("429");
+
       if (errMsg.includes("Requests from referer") || errMsg.includes("referer <empty>")) {
         // Populate and show custom troubleshooting card
         pagespeedAllowedReferer.textContent = `chrome-extension://${chrome.runtime.id}/*`;
         pagespeedErrorCard.classList.remove('hidden');
         showFloatingToast("API Key restriction blocked. See instructions below.", false);
+      } else if (isQuotaError && !apiKey) {
+        // Keyless quota hit — guide user to add an optional free key
+        showFloatingToast("Keyless limit reached. Add your free API key — tap 'Configure PageSpeed API Key'.", false);
       } else {
         showFloatingToast(`PageSpeed scan failed: ${errMsg}`, false);
       }
