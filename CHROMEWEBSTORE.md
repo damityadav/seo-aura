@@ -101,7 +101,7 @@ All calculations and scripts execution are restricted to the local device. No da
 ## Privacy Policy
 
 **Privacy Policy URL**
-https://github.com/damityadav/seo-aura/blob/main/PRIVACY.md
+https://damityadav.github.io/seo-aura-privacy/
 
 ---
 
@@ -122,7 +122,7 @@ Amit Yadav
 damityadavdigital@gmail.com
 
 **Homepage URL**
-https://github.com/damityadav/seo-aura
+https://damityadav.github.io/seo-aura-privacy/
 
 ---
 
