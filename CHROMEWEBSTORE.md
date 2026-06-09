@@ -119,7 +119,7 @@ https://github.com/damityadav/seo-aura/blob/main/PRIVACY.md
 Amit Yadav
 
 **Contact Email**
-damityadav@example.com
+damityadavdigital@gmail.com
 
 **Homepage URL**
 https://github.com/damityadav/seo-aura

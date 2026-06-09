@@ -34,5 +34,5 @@ We may update this Privacy Policy occasionally. When we do, we will update the "
 
 If you have any questions or concerns about this Privacy Policy or the data practices of SEO Aura, please contact us at:
 
-- **Email:** damityadav@example.com
+- **Email:** damityadavdigital@gmail.com
 - **GitHub Repository:** https://github.com/damityadav/seo-aura
